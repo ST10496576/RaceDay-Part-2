@@ -67,7 +67,4 @@ Alternatively, run the tests from the repository directory using:
 ## Continuous Integration
 GitHub Actions is configured to build the project and run unit tests when code is pushed or a pull request is created.
 
-### Successful Build Screenshot
-Add a screenshot of a successful green GitHub Actions workflow run here.
-
-![Successful GitHub Actions build](docs/ci-build-success.png)
+youtube link :https://youtu.be/KU_YQ1JA5pM?si=A7o5WFed5UYbxUtK
