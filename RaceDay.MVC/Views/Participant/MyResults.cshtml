@@ -1,0 +1,93 @@
+﻿@model List<RaceDay.MVC.Models.ResultViewModel>
+
+@{
+    ViewData["Title"] = "My Results";
+}
+
+<div class="container py-5">
+
+    <a asp-controller="Participant"
+       asp-action="Index"
+       class="btn btn-outline-secondary mb-4">
+        ← Back to Dashboard
+    </a>
+
+    <div class="mb-4">
+        <span class="text-primary fw-semibold">RACEDAY PARTICIPANT</span>
+        <h1 class="fw-bold">My Results 🏆</h1>
+        <p class="text-muted">
+            Track your race performances and celebrate your achievements.
+        </p>
+    </div>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4">
+
+            @foreach (var result in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body p-4">
+
+                            <span class="badge bg-primary mb-3">
+                                RACE RESULT
+                            </span>
+
+                            <h4 class="fw-bold">
+                                Result #@result.ResultID
+                            </h4>
+
+                            <hr />
+
+                            <p>
+                                <strong>Finish Time:</strong><br />
+                                @(result.FinishTime?.ToString(@"hh\:mm\:ss") ?? "Not recorded")
+                            </p>
+
+                            <p>
+                                <strong>Position:</strong><br />
+                                @(result.Position?.ToString() ?? "Not recorded")
+                            </p>
+
+                            <p>
+                                <strong>Average Pace:</strong><br />
+                                @(result.AveragePace?.ToString("0.00") ?? "Not recorded")
+                            </p>
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="card border-0 shadow-sm p-5 text-center">
+
+            <h4 class="fw-bold">No results yet</h4>
+
+            <p class="text-muted">
+                Your race results will appear here once they have been recorded and published.
+            </p>
+
+            <a asp-controller="Participant"
+               asp-action="Index"
+               class="btn btn-primary">
+                Explore Events
+            </a>
+
+        </div>
+    }
+
+</div>

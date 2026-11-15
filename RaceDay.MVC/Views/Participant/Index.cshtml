@@ -1,0 +1,139 @@
+﻿@model List<RaceDay.MVC.Models.EventViewModel>
+
+@{
+    ViewData["Title"] = "Participant Dashboard";
+}
+
+<div class="container py-4">
+
+    <div class="p-4 mb-4 rounded-4 text-white"
+         style="background: linear-gradient(120deg, #172554, #2563eb);">
+        <h1 class="fw-bold">Welcome to RaceDay! 🏃</h1>
+        <p class="mb-0">Your race. Your journey. Your finish line.</p>
+    </div>
+
+    <h3 class="fw-bold mb-3">Your RaceDay Dashboard</h3>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
+
+    <div class="row g-4 mb-5">
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm border-0 p-4 h-100">
+                <h5 class="fw-bold">🏁 Upcoming Events</h5>
+                <p class="text-muted">
+                    Discover upcoming races and find your next challenge.
+                </p>
+                <a href="#events" class="btn btn-primary mt-auto">Explore Events</a>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm border-0 p-4 h-100">
+                <h5 class="fw-bold">📋 My Enrolments</h5>
+                <p class="text-muted">
+                    View your enrolled events and track your status.
+                </p>
+                <a asp-controller="Participant"
+                   asp-action="MyEnrolments"
+                   class="btn btn-primary mt-auto">
+                    View My Enrolments
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm border-0 p-4 h-100">
+                <h5 class="fw-bold">🏆 My Results</h5>
+                <p class="text-muted">
+                    Celebrate your achievements and view your race history.
+                </p>
+                <a asp-controller="Participant"
+                   asp-action="MyResults"
+                   class="btn btn-primary mt-auto">
+                    View My Results
+                </a>
+            </div>
+        </div>
+
+        <div class="col-md-6 col-lg-3">
+            <div class="card shadow-sm border-0 p-4 h-100">
+                <h5 class="fw-bold">👤 My Profile</h5>
+                <p class="text-muted">
+                    View and update your personal information.
+                </p>
+                <a asp-controller="Participant"
+                   asp-action="Profile"
+                   class="btn btn-primary mt-auto">
+                    View My Profile
+                </a>
+            </div>
+        </div>
+
+    </div>
+
+    <section id="events">
+        <h3 class="fw-bold mb-3">Explore Upcoming Events</h3>
+
+        @if (Model != null && Model.Any())
+        {
+            <div class="row g-4">
+
+                @foreach (var raceEvent in Model)
+                {
+                    <div class="col-md-6 col-lg-4">
+
+                        <div class="card shadow-sm border-0 h-100 p-3">
+
+                            <h5 class="fw-bold">@raceEvent.EventName</h5>
+
+                            <p class="text-muted">
+                                @raceEvent.Description
+                            </p>
+
+                            <p class="mb-1">
+                                <strong>Location:</strong> @raceEvent.Location
+                            </p>
+
+                            <p class="mb-1">
+                                <strong>Province:</strong> @raceEvent.Province
+                            </p>
+
+                            <p class="mb-1">
+                                <strong>Race Date:</strong>
+                                @raceEvent.RaceDate.ToString("dd MMM yyyy")
+                            </p>
+
+                            <p class="mb-3">
+                                <strong>Registration Deadline:</strong>
+                                @raceEvent.RegistrationDeadline.ToString("dd MMM yyyy")
+                            </p>
+
+                            <a asp-controller="Event"
+                               asp-action="Details"
+                               asp-route-id="@raceEvent.EventID"
+                               class="btn btn-primary mt-auto">
+                                View Details
+                            </a>
+
+                        </div>
+
+                    </div>
+                }
+
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-info">
+                No events are currently available. Please check again later.
+            </div>
+        }
+    </section>
+
+</div>

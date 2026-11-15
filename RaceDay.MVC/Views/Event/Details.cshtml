@@ -1,0 +1,143 @@
+﻿@model RaceDay.MVC.Models.EventDetailsViewModel
+
+@{
+    ViewData["Title"] = "Event Details";
+}
+
+<div class="container py-5">
+
+    <a asp-controller="Participant"
+       asp-action="Index"
+       class="btn btn-outline-secondary mb-4">
+        ← Back to Events
+    </a>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["Success"]
+        </div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["Error"]
+        </div>
+    }
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
+
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-body p-4">
+
+            <span class="badge bg-primary mb-3">
+                RACE EVENT
+            </span>
+
+            <h1 class="fw-bold">@Model.Event.EventName</h1>
+
+            <p class="text-muted">
+                @Model.Event.Description
+            </p>
+
+            <hr />
+
+            <div class="row g-3">
+
+                <div class="col-md-6">
+                    <strong>Location</strong>
+                    <p>@Model.Event.Location, @Model.Event.Province</p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Race Date</strong>
+                    <p>@Model.Event.RaceDate.ToString("dd MMMM yyyy")</p>
+                </div>
+
+                <div class="col-md-6">
+                    <strong>Registration Deadline</strong>
+                    <p>@Model.Event.RegistrationDeadline.ToString("dd MMMM yyyy")</p>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <h2 class="fw-bold mb-3">Choose Your Race Category</h2>
+
+    <p class="text-muted">
+        Select the category that best suits your race goals.
+    </p>
+
+    @if (Model.Categories != null && Model.Categories.Any())
+    {
+        <div class="row g-4">
+
+            @foreach (var category in Model.Categories)
+            {
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card h-100 shadow-sm border-0">
+                        <div class="card-body p-4">
+
+                            <h4 class="fw-bold">
+                                @category.CategoryName
+                            </h4>
+
+                            <h3 class="text-primary fw-bold">
+                                @category.Distance km
+                            </h3>
+
+                            <p>
+                                Entry Fee:
+                                <strong>R @category.EntryFee</strong>
+                            </p>
+
+                            <p class="text-muted">
+                                Maximum Participants:
+                                @category.MaximumParticipants
+                            </p>
+
+                            <form asp-controller="Event"
+                                  asp-action="Enrol"
+                                  method="post">
+
+                                @Html.AntiForgeryToken()
+
+                                <input type="hidden"
+                                       name="categoryId"
+                                       value="@category.CategoryID" />
+
+                                <input type="hidden"
+                                       name="eventId"
+                                       value="@Model.Event.EventID" />
+
+                                <button type="submit"
+                                        class="btn btn-primary w-100">
+                                    Enrol Now
+                                </button>
+
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info">
+            No categories are currently available for this event.
+        </div>
+    }
+
+</div>

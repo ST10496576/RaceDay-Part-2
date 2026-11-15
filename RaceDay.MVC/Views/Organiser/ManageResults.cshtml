@@ -1,0 +1,106 @@
+﻿@model List<RaceDay.MVC.Models.EnrolmentResultViewModel>
+
+@{
+    ViewData["Title"] = "Manage Race Results";
+}
+
+<div class="container py-4">
+    <h2 class="fw-bold mb-3">Manage Race Results</h2>
+
+    <a asp-controller="Organiser"
+       asp-action="Dashboard"
+       class="btn btn-outline-secondary mb-4">
+        Back to Dashboard
+    </a>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success">@TempData["Success"]</div>
+    }
+
+    @if (TempData["Error"] != null)
+    {
+        <div class="alert alert-danger">@TempData["Error"]</div>
+    }
+
+    @if (Model == null || !Model.Any())
+    {
+        <div class="alert alert-info">
+            No participants are currently enrolled in this event.
+        </div>
+    }
+    else
+    {
+        <div class="table-responsive">
+            <table class="table table-striped align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Participant</th>
+                        <th>Email</th>
+                        <th>Category</th>
+                        <th>Distance (km)</th>
+                        <th>Finish Time</th>
+                        <th>Position</th>
+                        <th>Average Pace</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var participant in Model)
+                    {
+                        <tr>
+                            <td>@participant.ParticipantName</td>
+                            <td>@participant.Email</td>
+                            <td>@participant.CategoryName</td>
+                            <td>@participant.Distance</td>
+                            <td colspan="4">
+                                <form asp-controller="Organiser"
+                                      asp-action="SaveResult"
+                                      method="post"
+                                      class="d-flex flex-wrap gap-2 align-items-center">
+
+                                    @Html.AntiForgeryToken()
+
+                                    <input type="hidden"
+                                           name="eventId"
+                                           value="@participant.EventID" />
+
+                                    <input type="hidden"
+                                           name="enrolmentId"
+                                           value="@participant.EnrolmentID" />
+
+                                    <input type="time"
+                                           name="finishTime"
+                                           step="1"
+                                           class="form-control"
+                                           style="max-width:130px"
+                                           aria-label="Finish time" />
+
+                                    <input type="number"
+                                           name="position"
+                                           min="1"
+                                           placeholder="Position"
+                                           class="form-control"
+                                           style="max-width:100px" />
+
+                                    <input type="number"
+                                           name="averagePace"
+                                           min="0"
+                                           step="0.01"
+                                           placeholder="Pace"
+                                           class="form-control"
+                                           style="max-width:100px" />
+
+                                    <button type="submit"
+                                            class="btn btn-primary">
+                                        Save
+                                    </button>
+                                </form>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    }
+</div>

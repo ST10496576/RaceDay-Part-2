@@ -1,0 +1,107 @@
+﻿@model List<RaceDay.MVC.Models.EnrolmentViewModel>
+
+@{
+    ViewData["Title"] = "My Enrolments";
+}
+
+<div class="container py-5">
+
+    <a asp-controller="Participant"
+       asp-action="Index"
+       class="btn btn-outline-secondary mb-4">
+        ← Back to Dashboard
+    </a>
+
+    <div class="mb-4">
+        <span class="text-primary fw-semibold">RACEDAY PARTICIPANT</span>
+        <h1 class="fw-bold">My Enrolments 🏁</h1>
+        <p class="text-muted">
+            Keep track of your registered races and upcoming challenges.
+        </p>
+    </div>
+
+    @if (ViewBag.Error != null)
+    {
+        <div class="alert alert-danger">
+            @ViewBag.Error
+        </div>
+    }
+
+    @if (Model != null && Model.Any())
+    {
+        <div class="row g-4">
+
+            @foreach (var enrolment in Model)
+            {
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="card shadow-sm border-0 h-100">
+                        <div class="card-body p-4">
+
+                            <span class="badge bg-success mb-3">
+                                ENROLLED
+                            </span>
+
+                            <h4 class="fw-bold">
+                                @enrolment.EventName
+                            </h4>
+
+                            <h5 class="text-primary fw-bold">
+                                @enrolment.CategoryName
+                            </h5>
+
+                            <hr />
+
+                            <p class="mb-2">
+                                <strong>Distance:</strong>
+                                @enrolment.Distance km
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Entry Fee:</strong>
+                                R @enrolment.EntryFee
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Location:</strong>
+                                @enrolment.Location, @enrolment.Province
+                            </p>
+
+                            <p class="mb-2">
+                                <strong>Race Date:</strong>
+                                @enrolment.RaceDate.ToString("dd MMM yyyy")
+                            </p>
+
+                            <p class="text-muted mb-0">
+                                <strong>Registered:</strong>
+                                @enrolment.RegistrationDaate.ToString("dd MMM yyyy")
+                            </p>
+
+                        </div>
+                    </div>
+
+                </div>
+            }
+
+        </div>
+    }
+    else
+    {
+        <div class="card border-0 shadow-sm p-5 text-center">
+
+            <h4 class="fw-bold">No enrolments yet</h4>
+
+            <p class="text-muted">
+                Your registered races will appear here once you enrol.
+            </p>
+
+            <a asp-controller="Participant"
+               asp-action="Index"
+               class="btn btn-primary">
+                Explore Events
+            </a>
+
+        </div>
+    }
+
+</div>
